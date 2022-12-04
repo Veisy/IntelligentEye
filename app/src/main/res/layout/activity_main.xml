@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_background"
+    tools:context="com.vyy.intelligenteye.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:background="@drawable/frame"
+        android:paddingStart="40dp"
+        android:paddingTop="45dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/image" />
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progresBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/frame"
+        app:layout_constraintEnd_toEndOf="@id/frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toTopOf="@id/frame"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_processes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintEnd_toEndOf="@id/frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toBottomOf="@id/guideline3">
+
+        <ImageButton
+            android:id="@+id/imageButton_reflect_y_axis"
+            style="@style/normalButtonStyle"
+            android:background="@color/transparent"
+            android:contentDescription="@string/reflect_on_y_axis"
+            android:padding="@dimen/padding_medium"
+            android:src="@drawable/ic_flip"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageButton_reflect_x_axis"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton_reflect_x_axis"
+            style="@style/normalButtonStyle"
+            android:background="@color/transparent"
+            android:contentDescription="@string/reflect_on_x_axis"
+            android:padding="@dimen/padding_medium"
+            android:rotation="270"
+            android:src="@drawable/ic_flip"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageButton_resize"
+            app:layout_constraintStart_toEndOf="@id/imageButton_reflect_y_axis"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton_resize"
+            style="@style/normalButtonStyle"
+            android:background="@drawable/image_button_unselected_background"
+            android:contentDescription="@string/resize_image"
+            android:padding="@dimen/padding_medium"
+            android:src="@drawable/ic_photo_resize_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageButton_crop"
+            app:layout_constraintStart_toEndOf="@id/imageButton_reflect_x_axis"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton_crop"
+            style="@style/normalButtonStyle"
+            android:background="@drawable/image_button_unselected_background"
+            android:contentDescription="@string/crop_image"
+            android:padding="@dimen/padding_medium"
+            android:src="@drawable/ic_crop_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageButton_resize"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view_separatorLine_vertical"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="@color/gray_level_6"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/button_process"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/view_separatorLine_horizontal1"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@color/gray_level_6"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="@id/frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toTopOf="@id/guideline3" />
+
+    <View
+        android:id="@+id/view_separatorLine_horizontal2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@color/gray_level_6"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout_processes" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageButton
+        android:id="@+id/imageButton_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/image_button_selected_background"
+        android:contentDescription="@string/undo"
+        android:padding="@dimen/padding_medium"
+        android:src="@drawable/ic_undo_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/galleryButton_frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toTopOf="@id/galleryButton_frame"
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/galleryButton_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:background="@drawable/button_gallery_background"
+        android:contentDescription="@string/take_a_photo_from_camera"
+        android:padding="@dimen/padding_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline4">
+
+        <Button
+            android:id="@+id/galleryButton"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:background="@drawable/ic_gallery_image_24"
+            app:backgroundTint="@color/white" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/cameraButton_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:background="@drawable/button_camera_background"
+        android:contentDescription="@string/pick_image_from_gallery"
+        android:padding="@dimen/padding_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline4">
+
+        <Button
+            android:id="@+id/cameraButton"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:background="@drawable/ic_capture_videocam"
+            app:backgroundTint="@color/white" />
+    </FrameLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_width"
+        style="@style/textInputLayoutStyle"
+        android:hint="@string/width"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_width"
+            style="@style/textInputEditTextStyle"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_height"
+        style="@style/textInputLayoutStyle"
+        android:hint="@string/height"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_height"
+            style="@style/textInputEditTextStyle"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_fromX"
+        style="@style/textInputLayoutStyle"
+        android:hint="@string/fromx"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/textInputLayout_fromY"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_fromX"
+            style="@style/textInputEditTextStyle"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_fromY"
+        style="@style/textInputLayoutStyle"
+        android:hint="@string/fromy"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_fromY"
+            style="@style/textInputEditTextStyle"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_toX"
+        style="@style/textInputLayoutStyle"
+        android:hint="@string/tox"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_toX"
+            style="@style/textInputEditTextStyle"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_toY"
+        style="@style/textInputLayoutStyle"
+        android:hint="@string/toy"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/textInputLayout_toX"
+        app:layout_constraintTop_toBottomOf="@id/view_separatorLine_horizontal2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_toY"
+            style="@style/textInputEditTextStyle"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_inputs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="textInputLayout_width, textInputLayout_height, textInputLayout_fromX, textInputLayout_fromY, textInputLayout_toX, textInputLayout_toY" />
+
+    <Button
+        android:id="@+id/button_process"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:backgroundTint="@color/white"
+        android:text="@string/process"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/textSize_small"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_inputs"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView_timingTitle"
+        style="@style/classificationInfoTextStyle"
+        android:text="@string/timing"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/button_process"
+        app:layout_constraintBottom_toTopOf="@id/textView_analyzeResult"
+        app:layout_constraintEnd_toStartOf="@id/textView_timingText"
+        app:layout_constraintStart_toStartOf="@id/textView_analyzeResult"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView_timingText"
+        style="@style/classificationInfoTextStyle"
+        android:layout_marginEnd="@dimen/margin_medium"
+        app:layout_constraintBottom_toBottomOf="@id/textView_timingTitle"
+        app:layout_constraintEnd_toStartOf="@id/textView_confidenceTitle"
+        app:layout_constraintStart_toEndOf="@id/textView_timingTitle"
+        app:layout_constraintTop_toTopOf="@id/textView_timingTitle"
+        tools:text=" timing"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView_confidenceTitle"
+        style="@style/classificationInfoTextStyle"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:text="@string/confidence"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/textView_timingTitle"
+        app:layout_constraintEnd_toStartOf="@id/textView_confidenceText"
+        app:layout_constraintStart_toEndOf="@id/textView_timingText"
+        app:layout_constraintTop_toTopOf="@id/textView_timingTitle"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView_confidenceText"
+        style="@style/classificationInfoTextStyle"
+        android:layout_marginEnd="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="@id/textView_confidenceTitle"
+        app:layout_constraintEnd_toEndOf="@id/textView_analyzeResult"
+        app:layout_constraintStart_toEndOf="@id/textView_confidenceTitle"
+        app:layout_constraintTop_toTopOf="@id/textView_confidenceTitle"
+        tools:text=" 60%"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView_analyzeResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_medium"
+        android:textSize="@dimen/textSize_large"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/galleryButton_frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_process"
+        tools:text="@string/no_disease_detected"
+        tools:textColor="@color/green"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/view_eyeDiseaseIndicator"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/circular_green_indicator"
+        android:importantForAccessibility="no"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/textView_analyzeResult"
+        app:layout_constraintEnd_toStartOf="@id/textView_analyzeResult"
+        app:layout_constraintTop_toTopOf="@id/textView_analyzeResult"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/button_analyze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/analyze"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/galleryButton_frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_process"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>
