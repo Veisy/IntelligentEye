@@ -17,7 +17,6 @@ class ImageClassifierHelper(
 
     fun classify(image: Bitmap) {
         val eyeModel = EyeModel.newInstance(context)
-
         val bitmapCopy = image.copy(Bitmap.Config.ARGB_8888, true)
 
         // Resize bitmap to 224x224
@@ -35,7 +34,7 @@ class ImageClassifierHelper(
 
         // Runs model inference and gets result.
         val outputs = eyeModel.process(inputFeature0)
-        outputAsTensorBuffer = outputs.outputFeature0AsTensorBuffer
+        outputAsTensorBuffer = outputs.probabilityAsTensorBuffer
 
         Log.d(
             "Classification Output",
