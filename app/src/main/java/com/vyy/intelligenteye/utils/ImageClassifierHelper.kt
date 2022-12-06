@@ -2,11 +2,9 @@ package com.vyy.intelligenteye.utils
 
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.util.Log
 import com.vyy.intelligenteye.ml.EyeModel
-import com.vyy.intelligenteye.processes.resize
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
@@ -17,15 +15,16 @@ class ImageClassifierHelper(
 
     var outputAsTensorBuffer: TensorBuffer? = null
 
-    fun classify(image: Bitmap, resources: Resources) {
+    fun classify(image: Bitmap) {
         val eyeModel = EyeModel.newInstance(context)
 
         val bitmapCopy = image.copy(Bitmap.Config.ARGB_8888, true)
 
-        val bitmap = resize(bitmapCopy, 224, 224, resources).bitmap
+        // Resize bitmap to 224x224
+        val resizedBitmap = Bitmap.createScaledBitmap(bitmapCopy, 224, 224, true)
 
         val tensorImage = TensorImage(DataType.FLOAT32)
-        tensorImage.load(bitmap)
+        tensorImage.load(resizedBitmap)
 
         val byteBuffer = tensorImage.buffer
 

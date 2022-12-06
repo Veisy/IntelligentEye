@@ -489,7 +489,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 var inferenceTime = SystemClock.uptimeMillis()
 
                 withContext(Dispatchers.Default) {
-                    imageClassifierHelper.classify(imageBitmap!!, resources)
+                    imageClassifierHelper.classify(imageBitmap!!)
                 }
 
                 inferenceTime = SystemClock.uptimeMillis() - inferenceTime
