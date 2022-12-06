@@ -1,61 +1,45 @@
 package com.vyy.intelligenteye.utils
 
+
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.util.Log
-import org.tensorflow.lite.gpu.CompatibilityList
-import org.tensorflow.lite.support.image.ImageProcessor
+import com.vyy.intelligenteye.ml.EyeModel
+import com.vyy.intelligenteye.processes.resize
+import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.task.core.BaseOptions
-import org.tensorflow.lite.task.vision.classifier.Classifications
-import org.tensorflow.lite.task.vision.classifier.ImageClassifier
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 
 class ImageClassifierHelper(
     private val context: Context
 ) {
-    private var imageClassifier: ImageClassifier? = null
 
-    init {
-        setupImageClassifier()
-    }
 
-    private fun setupImageClassifier() {
-        val optionsBuilder = ImageClassifier.ImageClassifierOptions.builder()
-            .setMaxResults(MAX_RESULTS)
+    fun classify(image: Bitmap, resources: Resources) {
+        val model = EyeModel.newInstance(context)
 
-        val baseOptionsBuilder = BaseOptions.builder()
+        val bitmapCopy = image.copy(Bitmap.Config.ARGB_8888, true)
 
-        if (CompatibilityList().isDelegateSupportedOnThisDevice) {
-            baseOptionsBuilder.useGpu()
-        } else {
-            Log.e(TAG, "GPU is not supported on this device")
-        }
+        val bitmap = resize(bitmapCopy, 224, 224, resources).bitmap
 
-        optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
+        val tensorImage = TensorImage(DataType.FLOAT32)
+        tensorImage.load(bitmap)
 
-        val modelName = "eye_model.tflite"
+        val byteBuffer = tensorImage.buffer
 
-        try {
-            imageClassifier =
-                ImageClassifier.createFromFileAndOptions(context, modelName, optionsBuilder.build())
-        } catch (e: IllegalStateException) {
-            Log.e(TAG, "TFLite failed to load model with error: " + e.message)
-        }
-    }
+        // Creates inputs for reference.
+        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
+        inputFeature0.loadBuffer(byteBuffer)
 
-    fun classify(image: Bitmap): MutableList<Classifications>? {
-        if (imageClassifier == null) {
-            setupImageClassifier()
-        }
+        // Runs model inference and gets result.
+        val outputs = model.process(inputFeature0)
+        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
 
-        // Create preprocessor for the image.
-        val imageProcessor =
-            ImageProcessor.Builder().build()
+        Log.d("RESULT", outputFeature0.floatArray.contentToString())
 
-        // Preprocess the image and convert it into a TensorImage for classification.
-        val tensorImage = imageProcessor.process(TensorImage.fromBitmap(image))
-
-        return imageClassifier?.classify(tensorImage)
+        // Releases model resources if no longer used.
+        model.close()
     }
 
     companion object {

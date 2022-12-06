@@ -485,23 +485,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             imageBitmap = imageUriToBitmapDeferred?.await()
             val imageClassifierHelper = imageClassifierSetupDeferred?.await()
             if (checkEnoughTimePassed() && imageBitmap != null && imageClassifierHelper != null) {
-                // Since this operation takes time, we use Dispatchers.Default,
-                // which is optimized for time consuming calculations.
 
-                var inferenceTime = SystemClock.uptimeMillis()
 
-                val result = withContext(Dispatchers.Default) {
-                    imageClassifierHelper.classify(imageBitmap!!)
+                withContext(Dispatchers.Default) {
+                    imageClassifierHelper.classify(imageBitmap!!, resources)
                 }
-                Log.d(TAG, result.toString())
 
-                val label = result?.get(0)?.categories?.get(0)?.label
-                val score = result?.get(0)?.categories?.get(0)?.score
-
-                inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-                if (label != null && score != null) {
-                    updateEyeDiseaseViews(true, label, score, inferenceTime)
-                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Eye disease analysis is failed: ${e.message}", e)
