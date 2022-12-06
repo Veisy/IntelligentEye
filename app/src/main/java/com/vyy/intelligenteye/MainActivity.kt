@@ -36,12 +36,16 @@ import com.vyy.intelligenteye.processes.crop
 import com.vyy.intelligenteye.processes.reflectOnXAxis
 import com.vyy.intelligenteye.processes.reflectOnYAxis
 import com.vyy.intelligenteye.processes.resize
+import com.vyy.intelligenteye.utils.Constants.CATARACT
 import com.vyy.intelligenteye.utils.Constants.FILENAME_FORMAT
+import com.vyy.intelligenteye.utils.Constants.GLAUCOMA
 import com.vyy.intelligenteye.utils.Constants.IMAGE_STACK_SIZE_MAX
 import com.vyy.intelligenteye.utils.Constants.IMAGE_STACK_SIZE_MIN
 import com.vyy.intelligenteye.utils.Constants.MAX_HEIGHT
 import com.vyy.intelligenteye.utils.Constants.MAX_WIDTH
+import com.vyy.intelligenteye.utils.Constants.NO_DISEASE
 import com.vyy.intelligenteye.utils.Constants.REQUEST_CODE_PERMISSIONS
+import com.vyy.intelligenteye.utils.Constants.RETINAL_DISEASES
 import com.vyy.intelligenteye.utils.ImageClassifierHelper
 import com.vyy.intelligenteye.utils.InputFilterMinMax
 import com.vyy.intelligenteye.utils.checkEnoughTimePassed
@@ -659,35 +663,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (eyeDiseaseType.isNotEmpty() && isViewsVisible) {
             resultViews.forEach { it.visibility = View.VISIBLE }
             binding.textViewAnalyzeResult.text = eyeDiseaseType
-//                viewEyeDiseaseIndicator.background = when (eyeDiseaseType) {
-//                    NO_DISEASE -> ContextCompat.getDrawable(
-//                        this@MainActivity, R.drawable.circular_green_indicator
-//                    )
-//                    else -> ContextCompat.getDrawable(
-//                        this@MainActivity, R.drawable.circular_red_indicator
-//                    )
-//                }
-//                textViewAnalyzeResult.text = when (eyeDiseaseType) {
-//                    RETINAL_DISEASES -> {
-//                        getString(R.string.retinal_disease_detected)
-//                    }
-//                    CATARACT -> {
-//                        getString(R.string.cataract_detected)
-//                    }
-//                    GLAUCOMA -> {
-//                        getString(R.string.glaucoma_detected)
-//                    }
-//                    else -> {
-//                        getString(R.string.no_disease_detected)
-//                    }
-//                }
-//                textViewAnalyzeResult.setTextColor(
-//                    if (eyeDiseaseType == NO_DISEASE) {
-//                        ContextCompat.getColor(this@MainActivity, R.color.green)
-//                    } else {
-//                        ContextCompat.getColor(this@MainActivity, R.color.red)
-//                    }
-//                )
+            binding.viewEyeDiseaseIndicator.background = when (eyeDiseaseType) {
+                NO_DISEASE -> ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.circular_green_indicator
+                )
+                else -> ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.circular_red_indicator
+                )
+            }
+            binding.textViewAnalyzeResult.text = when (eyeDiseaseType) {
+                RETINAL_DISEASES -> {
+                    getString(R.string.retinal_disease_detected)
+                }
+                CATARACT -> {
+                    getString(R.string.cataract_detected)
+                }
+                GLAUCOMA -> {
+                    getString(R.string.glaucoma_detected)
+                }
+                else -> {
+                    getString(R.string.no_disease_detected)
+                }
+            }
+            binding.textViewAnalyzeResult.setTextColor(
+                if (eyeDiseaseType == NO_DISEASE) {
+                    ContextCompat.getColor(this@MainActivity, R.color.green)
+                } else {
+                    ContextCompat.getColor(this@MainActivity, R.color.red)
+                }
+            )
             binding.buttonAnalyze.visibility = View.GONE
 
             if (timing > 0) {
