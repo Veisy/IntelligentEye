@@ -486,11 +486,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val imageClassifierHelper = imageClassifierSetupDeferred?.await()
             if (checkEnoughTimePassed() && imageBitmap != null && imageClassifierHelper != null) {
 
+                var inferenceTime = SystemClock.uptimeMillis()
 
                 withContext(Dispatchers.Default) {
                     imageClassifierHelper.classify(imageBitmap!!, resources)
                 }
 
+                inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+
+                if (imageClassifierHelper.outputAsTensorBuffer != null
+                    && imageClassifierHelper.getOutputMaxIndex() != -1
+                    && imageClassifierHelper.getOutputMaxConfidence() != -1f
+                ) {
+                    updateEyeDiseaseViews(
+                        true,
+                        imageClassifierHelper.getOutputMaxIndex().toString(),
+                        imageClassifierHelper.getOutputMaxConfidence(),
+                        inferenceTime
+                    )
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Eye disease analysis is failed: ${e.message}", e)

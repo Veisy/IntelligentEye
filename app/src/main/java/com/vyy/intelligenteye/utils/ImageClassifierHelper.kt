@@ -15,9 +15,10 @@ class ImageClassifierHelper(
     private val context: Context
 ) {
 
+    var outputAsTensorBuffer: TensorBuffer? = null
 
     fun classify(image: Bitmap, resources: Resources) {
-        val model = EyeModel.newInstance(context)
+        val eyeModel = EyeModel.newInstance(context)
 
         val bitmapCopy = image.copy(Bitmap.Config.ARGB_8888, true)
 
@@ -29,22 +30,31 @@ class ImageClassifierHelper(
         val byteBuffer = tensorImage.buffer
 
         // Creates inputs for reference.
-        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
+        val inputFeature0 =
+            TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
         inputFeature0.loadBuffer(byteBuffer)
 
         // Runs model inference and gets result.
-        val outputs = model.process(inputFeature0)
-        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+        val outputs = eyeModel.process(inputFeature0)
+        outputAsTensorBuffer = outputs.outputFeature0AsTensorBuffer
 
-        Log.d("RESULT", outputFeature0.floatArray.contentToString())
+        Log.d(
+            "Classification Output",
+            "classify: ${outputAsTensorBuffer?.floatArray.contentToString()}"
+        )
 
         // Releases model resources if no longer used.
-        model.close()
+        eyeModel.close()
     }
 
-    companion object {
-        const val MAX_RESULTS = 1
+    fun getOutputMaxIndex(): Int {
+        val outputFeature0AsFloatArray = outputAsTensorBuffer?.floatArray
+        return outputFeature0AsFloatArray?.indices?.maxByOrNull { outputFeature0AsFloatArray[it] }
+            ?: -1
+    }
 
-        private const val TAG = "ImageClassifierHelper"
+    fun getOutputMaxConfidence(): Float {
+        val outputFeature0AsFloatArray = outputAsTensorBuffer?.floatArray
+        return outputFeature0AsFloatArray?.maxOrNull() ?: -1f
     }
 }
