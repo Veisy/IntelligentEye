@@ -706,10 +706,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             if (score > 0f) {
-                val confidencePercent = (score.toDouble() * 100).roundToInt()
-                val confidenceText = " $confidencePercent%"
+                val df = DecimalFormat("#.##")
+                df.roundingMode = RoundingMode.HALF_UP
+                val confidencePercent = score.toDouble() * 100
+                val confidenceText = " ${df.format(confidencePercent)}%"
                 binding.textViewConfidenceText.text = confidenceText
-                binding.textViewConfidenceText.setTextColor(adjustPercentageColor(confidencePercent))
+                binding.textViewConfidenceText.setTextColor(adjustPercentageColor(confidencePercent.roundToInt()))
             }
 
         } else if (isViewsVisible) {
