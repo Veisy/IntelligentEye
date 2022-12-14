@@ -4,6 +4,7 @@ import android.Manifest.permission.CAMERA
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -13,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -30,7 +32,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.vyy.intelligenteye.utils.adjustPercentageColor
 import com.vyy.intelligenteye.databinding.ActivityMainBinding
 import com.vyy.intelligenteye.processes.crop
 import com.vyy.intelligenteye.processes.reflectOnXAxis
@@ -48,6 +49,7 @@ import com.vyy.intelligenteye.utils.Constants.REQUEST_CODE_PERMISSIONS
 import com.vyy.intelligenteye.utils.Constants.RETINAL_DISEASES
 import com.vyy.intelligenteye.utils.ImageClassifierHelper
 import com.vyy.intelligenteye.utils.InputFilterMinMax
+import com.vyy.intelligenteye.utils.adjustPercentageColor
 import com.vyy.intelligenteye.utils.checkEnoughTimePassed
 import kotlinx.coroutines.*
 import java.math.RoundingMode
@@ -151,6 +153,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.imageButton_undo, R.id.cameraButton, R.id.galleryButton -> {
                     cancelCurrentJobs()
                     updateSelectedProcess(null)
+
                     when (v.id) {
                         R.id.imageButton_undo -> removeFromImageStack()
                         R.id.cameraButton -> takePhoto()
@@ -256,6 +259,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 try {
                     imageUri = uri
                     updateImageView(uri)
+                    updateImageName(true, uri.getName(this))
 
                     imageUriToBitmapDeferred = this.lifecycleScope.async(Dispatchers.Default) {
                         val bitmap = imageUri?.let { uriToBitmap(it) }
@@ -349,6 +353,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         imageUri = outputFileResults.savedUri
                         runOnUiThread {
                             updateImageView(imageUri)
+                            updateImageName()
                         }
 
                         imageUriToBitmapDeferred = CoroutineScope(Dispatchers.Default).async {
@@ -517,17 +522,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         input.isNotEmpty() && input.toDouble() > 0
     }
 
-    // Load image to imageView
-    private fun updateImageView(image: Any?) {
-        if (image is Uri || image is BitmapDrawable) {
-            image.let {
-                Glide.with(this).load(it).into(binding.imageView)
-            }
-
-            updateEyeDiseaseViews(isViewsVisible = imageStack.size > 0)
-        }
-    }
-
     private suspend fun addToImageStack(bitmap: Bitmap) {
         // If stack size is already IMAGE_STACK_SIZE_MAX, remove the first element
         if (imageStack.size == IMAGE_STACK_SIZE_MAX) {
@@ -551,12 +545,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 imageStack.last()
             }
             updateImageView(imageStack.last().toDrawable(resources))
+            updateImageName()
             if (binding.progresBar.isVisible) {
                 showProgressBar(false)
             }
         }
         if (imageStack.size == IMAGE_STACK_SIZE_MIN) {
             binding.imageButtonUndo.visibility = View.GONE
+        }
+    }
+
+    // Load image to imageView
+    private fun updateImageView(image: Any?) {
+        if (image is Uri || image is BitmapDrawable) {
+            image.let {
+                Glide.with(this).load(it).into(binding.imageView)
+            }
+
+            updateEyeDiseaseViews(isViewsVisible = imageStack.size > 0)
+        }
+    }
+
+    private fun updateImageName(isVisible: Boolean = false, imageName: String? = null) {
+        binding.textViewImageName.apply {
+            visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+            text = imageName ?: ""
+
         }
     }
 
@@ -761,6 +775,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     } else {
         @Suppress("DEPRECATION") MediaStore.Images.Media.getBitmap(contentResolver, uri)
+    }
+
+    private fun Uri.getName(context: Context): String? {
+        val returnCursor = context.contentResolver.query(this, null, null, null, null)
+        val nameIndex = returnCursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        returnCursor?.moveToFirst()
+        val fileName = nameIndex?.let { returnCursor.getString(it) }
+        returnCursor?.close()
+        return fileName
     }
 
     override fun onStop() {
