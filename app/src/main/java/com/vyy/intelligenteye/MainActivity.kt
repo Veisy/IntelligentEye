@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var imageProcessingJob: Job? = null
     private var imageAnalysisJob: Job? = null
     private var imageUriToBitmapDeferred: Deferred<Bitmap?>? = null
-    private var imageClassifierSetupDeferred: Deferred<ImageClassifierHelper>? = null
 
     private var selectedProcess: Int? = null
 
@@ -94,7 +93,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onStart()
         checkPermissions()
         cameraExecutor = Executors.newSingleThreadExecutor()
-        setupImageClassifier()
 
         // Default Image
         if (imageStack.size < 1) {
@@ -110,14 +108,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     addToImageStack(bitmap)
                 }
                 bitmap
-            }
-        }
-    }
-
-    private fun setupImageClassifier() {
-        if (imageClassifierSetupDeferred == null) {
-            imageClassifierSetupDeferred = this.lifecycleScope.async(Dispatchers.IO) {
-                ImageClassifierHelper(this@MainActivity)
             }
         }
     }
@@ -488,9 +478,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         try {
             showProgressBar(true)
             imageBitmap = imageUriToBitmapDeferred?.await()
-            val imageClassifierHelper = imageClassifierSetupDeferred?.await()
-            if (checkEnoughTimePassed() && imageBitmap != null && imageClassifierHelper != null) {
-
+            if (checkEnoughTimePassed() && imageBitmap != null) {
+                val imageClassifierHelper = ImageClassifierHelper(this)
                 var inferenceTime = SystemClock.uptimeMillis()
 
                 withContext(Dispatchers.Default) {
