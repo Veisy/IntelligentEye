@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_large"
         android:background="@drawable/frame"
         android:paddingStart="40dp"
@@ -31,6 +32,22 @@
             android:layout_gravity="center"
             android:contentDescription="@string/image" />
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView_imageName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_large"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textStyle="italic"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="image12345678910111121314151617"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progresBar"
@@ -319,10 +336,10 @@
         style="@style/classificationInfoTextStyle"
         android:text="@string/timing"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/button_process"
         app:layout_constraintBottom_toTopOf="@id/textView_analyzeResult"
         app:layout_constraintEnd_toStartOf="@id/textView_timingText"
         app:layout_constraintStart_toStartOf="@id/textView_analyzeResult"
+        app:layout_constraintTop_toBottomOf="@id/button_process"
         tools:visibility="visible" />
 
     <TextView

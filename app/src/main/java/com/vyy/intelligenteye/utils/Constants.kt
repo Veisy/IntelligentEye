@@ -7,10 +7,10 @@ object Constants {
     const val MAX_WIDTH = 10_000
     const val MAX_HEIGHT = 10_000
 
-    const val RETINAL_DISEASES = "3"
+    const val RETINAL_DISEASES = "2"
     const val CATARACT = "0"
     const val GLAUCOMA = "1"
-    const val NO_DISEASE = "2"
+    const val NO_DISEASE = "3"
 
     const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     const val REQUEST_CODE_PERMISSIONS = 10
